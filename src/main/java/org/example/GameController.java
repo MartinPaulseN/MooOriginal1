@@ -1,6 +1,6 @@
 package org.example;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameController {
     private final UserInterface ui;
@@ -13,14 +13,13 @@ public class GameController {
         this.game = game;
     }
 
-    public void run() throws SQLException, InterruptedException {
-        ui.showMessage("Enter your user name:\n");
+    public void run() throws SQLException {
+        ui.showMessage(GameConstants.USERNAME_PROMPT);
         String name = ui.prompt("");
         int playerId = db.getPlayerIdByName(name);
 
         if (playerId < 0) {
-            ui.showMessage("User not in database, please register with admin");
-            Thread.sleep(5000);
+            ui.showMessage("User not in database-exiting.");
             ui.exit();
             return;
         }
@@ -29,7 +28,7 @@ public class GameController {
         while (play) {
             String goal = game.makeGoal();
             ui.clear();
-            ui.showMessage("New game:\n");
+            ui.showMessage(GameConstants.NEW_GAME_PROMPT);
             String guess = ui.prompt("");
             int guesses = 1;
             String feedback = game.generateFeedback(goal, guess);
@@ -51,12 +50,14 @@ public class GameController {
     }
 
     private void showTopTen() throws SQLException {
-        List<Database.PlayerAverage> topList = db.getTopTenPlayers();
-        ui.showMessage("Top Ten List\n     Player     Average\n");
-        int pos = 1;
-        for (DatabaseManager.PlayerAverage p : topList) {
-            ui.showMessage(String.format("%3d %-10s%5.2f%n", pos++, p.name, p.average));
-            if (pos > 10) break;
-        }
+        ui.showMessage(GameConstants.TOP_TEN_HEADER);
+        AtomicInteger pos = new AtomicInteger(1);
+        db.getTopTenPlayers().stream()
+                .limit(10)
+                .forEach(p -> ui.showMessage(
+                        String.format("%3d %-10s%5.2f%n",
+                                pos.getAndIncrement(),
+                                p.name,
+                                p.average)));
     }
 }

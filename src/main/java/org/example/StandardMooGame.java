@@ -3,6 +3,7 @@ import java.util.Random;
 
 public class StandardMooGame implements Game {
     private final Random random = new Random();
+    private static final String DELIMITER = ",";
 
     @Override
     public String makeGoal() {
@@ -33,6 +34,6 @@ public class StandardMooGame implements Game {
             }
         }
 
-        return "B".repeat(bulls) + "," + "C".repeat(cows);
+        return "B".repeat(bulls) + DELIMITER + "C".repeat(cows);
     }
 }
