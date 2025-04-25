@@ -20,6 +20,9 @@ public class StandardMooGame implements Game {
 
     @Override
     public String generateFeedback(String goal, String guess) {
+        if (goal.length() != guess.length()) {
+            return "Invalid guess, try again!";
+        }
         int bulls = 0;
         int cows = 0;
         for (int i = 0; i < 4; i++) {

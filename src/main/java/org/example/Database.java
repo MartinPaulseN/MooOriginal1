@@ -3,6 +3,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface Database {
+    int createPlayer(String name) throws SQLException;
     int getPlayerIdByName(String name) throws SQLException;
     void saveResult(int playerId, int guesses) throws SQLException;
     List<DatabaseManager.PlayerAverage> getTopTenPlayers() throws SQLException;

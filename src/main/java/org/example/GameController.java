@@ -19,8 +19,9 @@ public class GameController {
         int playerId = db.getPlayerIdByName(name);
 
         if (playerId < 0) {
-            ui.showMessage("User not in database-exiting.");
-            ui.exit();
+            ui.showMessage("User not in database. Creating new user...\n");
+            playerId = db.createPlayer(name);
+
             return;
         }
 

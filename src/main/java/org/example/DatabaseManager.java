@@ -10,6 +10,19 @@ public class DatabaseManager implements Database {
         this.connection = DriverManager.getConnection(url, user, password);
     }
 
+    public int createPlayer(String name) throws SQLException {
+        String sql = "INSERT INTO players (name) VALUES (?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.executeUpdate();
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            }
+        }
+        return -1;
+    }
+
     public int getPlayerIdByName(String name) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("SELECT id FROM players WHERE name = ?")) {
             statement.setString(1, name);

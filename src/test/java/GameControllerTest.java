@@ -37,6 +37,11 @@ class GameControllerTest {
 
     static class MockDB implements Database {
         Map<String, Integer> savedResults = new HashMap<>();
+
+        @Override
+        public int createPlayer(String name) {
+            return 999;
+        }
         public int getPlayerIdByName(String name) { return name.equals("testuser") ? 1 : -1; }
         public void saveResult(int playerId, int guesses) { savedResults.put("testuser", guesses); }
         public List<PlayerAverage> getTopTenPlayers() { return List.of(); }
