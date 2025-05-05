@@ -13,15 +13,15 @@ public class GameController {
         this.game = game;
     }
 
-    public void run() throws SQLException {
+    public void run() throws SQLException, InterruptedException {
         ui.showMessage(GameConstants.USERNAME_PROMPT);
         String name = ui.prompt("");
         int playerId = db.getPlayerIdByName(name);
 
         if (playerId < 0) {
-            ui.showMessage("User not in database. Creating new user...\n");
-            playerId = db.createPlayer(name);
-
+            ui.showMessage("User not in database, please register with admin");
+            Thread.sleep(5000);
+            ui.exit();
             return;
         }
 

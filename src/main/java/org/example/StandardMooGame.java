@@ -25,15 +25,12 @@ public class StandardMooGame implements Game {
         }
         int bulls = 0;
         int cows = 0;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (goal.charAt(i) == guess.charAt(j)) {
-                    if (i == j) {
-                        bulls++;
-                    } else {
-                        cows++;
-                    }
-                }
+        for (int i = 0; i < guess.length(); i++) {
+            char gChar = guess.charAt(i);
+            if (gChar == goal.charAt(i)) {
+                bulls++;
+            } else if (goal.indexOf(gChar) >= 0) {
+                cows++;
             }
         }
 
